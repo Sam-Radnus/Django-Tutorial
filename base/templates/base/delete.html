@@ -1,0 +1,20 @@
+{%extends 'main.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Hello, world!</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content=" "/>
+</head>
+<body>
+  {%block content%}
+  <form method="POST" action="">
+         {% csrf_token %}
+         <p>Are you Sure you want to delete"{{obj}}"?</p>
+         <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+         <input type="submit" value="Confirm"/>
+  </form>
+  {%endblock content%}
+</body>
+</html>
