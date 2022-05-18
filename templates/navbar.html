@@ -18,6 +18,7 @@
     <input type="text" name="q" placeholder="Search" />
   </form>
   {% if request.user.is_authenticated %}
+  <h1>Hello {{request.user}}</h1>
    <a href="{% url 'logout' %}">logout</a>
   {% else %}
   <a href="{% url 'login' %}">login</a>

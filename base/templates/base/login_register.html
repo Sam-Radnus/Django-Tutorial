@@ -29,13 +29,13 @@
   <div>
     <form method="POST" action="">
       {% csrf_token %}
-      
-    
+      {{form.as_p}}
       <input type="submit" value="Register"/>
+    </form>
       <p>Already Signed up?</p>
       <a href="{% url 'login' %}">Login</a>
      
-    </form>
+    
 </div>
 {% endif %}
 

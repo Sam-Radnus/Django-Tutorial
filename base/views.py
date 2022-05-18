@@ -37,15 +37,26 @@ def loginPage(request):
             return redirect('home')
         else:
             messages.error(request, 'Credentials Dont Match') 
-    context={page:'login'}
+    context={'page':page}
     return render(request,'base/login_register.html',context)
 def logoutUser(request):
     logout(request)
     return redirect('home')
 
 def registerPage(request):
-    page='register'
-    return render(request,'base/login_register.html')    
+    form=UserCreationForm()
+
+    if request.method=='POST':
+        form=UserCreationForm(request.POST)
+        if form.is_valid():
+            user=form.save(commit=False) # to save the state of the data entered in order to prevent the user from entering erroneus input
+            user.username=user.username.lower()
+            user.save()
+            login(request,user)
+            return redirect('home')
+        else:
+            messages.error(request,'error occurred')    
+    return render(request,'base/login_register.html',{'form':form})    
 def home(request):
     #objects-model manager
     q=request.GET.get('q') if request.GET.get('q')!=None else '' #whatever we passed onto the url 
