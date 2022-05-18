@@ -14,7 +14,7 @@ class Room(models.Model):
     topic=models.ForeignKey(Topic,on_delete=models.SET_NULL,null=True) #if topic was placed below Room then we must put Topic under Singles Commas i.e 'Topic',on_delete=models.CASCADE
     name=models.CharField(max_length=200)
     description=models.TextField(null=True,blank=True);
-    #participants=
+    participants=models.ManyToManyField(User,related_name='participants',blank=True)
     updated =models.DateTimeField(auto_now=True)   #automatic 
     created =models.DateTimeField(auto_now_add=True)  #it will only save a value once i.e the time it is created
       
