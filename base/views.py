@@ -1,7 +1,12 @@
 from urllib.request import Request
 from django.shortcuts import render,redirect
+from django.contrib.auth.models import User
+from django.contrib.messages import constants as messages
+
 from django.db.models import Q
 from .models import Room,Topic
+
+
 from .forms import RoomForm
 # Create your views here.
 
@@ -11,6 +16,18 @@ from .forms import RoomForm
 #     {'id':2,'name':'lets learn django!'},
 #     {'id':3,'name':'lets learn flask!'},
 # ]
+
+def loginPage(request):
+    if request.method=='POST':
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+
+        try:   
+            user=User.objects.get(username=username)
+        except:
+           messages.error(request, 'User Does not Exist')
+    context={}
+    return render(request,'base/login_register.html',context)
 def home(request):
     #objects-model manager
     q=request.GET.get('q') if request.GET.get('q')!=None else '' #whatever we passed onto the url 
