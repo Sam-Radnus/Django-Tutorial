@@ -8,21 +8,37 @@
   <meta name="description" content="" />
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
+{% block content %}
 <body>
-  {% block content %}
+ 
+  {%  if page == 'login' %}
   <div>
-      <form method="POST" action="">
+    <form method="POST" action="">
+      {% csrf_token %}
+      <label>Username:</label>
+      <input type="text" name="username" placeholder="Enter Username"/> 
+      
+      <input type="password" name="password" placeholder="Enter Password"/> 
+      <input type="submit" value="login"/>
+    </form>
+    <p>Haven't Signed up yet?</p>
+    <a href="{% url 'register' %}">Sign Up </a>
 
-        {% csrf_token %}
-        <label>Username:</label>
-        <input type="text" name="username" placeholder="Enter Username"/> 
-
-        <label>Password:</label>
-        <input type="password" name="password" placeholder="Enter Password"/> 
-        <input type="submit" value="login">
-
-      </form>
   </div>
-  {% endblock content %}
+ {% else %}
+  <div>
+    <form method="POST" action="">
+      {% csrf_token %}
+      
+    
+      <input type="submit" value="Register"/>
+      <p>Already Signed up?</p>
+      <a href="{% url 'login' %}">Login</a>
+     
+    </form>
+</div>
+{% endif %}
+
 </body>
+{% endblock content %}
 </html>
