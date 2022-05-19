@@ -56,6 +56,8 @@ def registerPage(request):
         else:
             messages.error(request,'error occurred')    
     return render(request,'base/login_register.html',{'form':form})    
+
+
 def home(request):
     #objects-model manager
     q=request.GET.get('q') if request.GET.get('q')!=None else '' #whatever we passed onto the url 
@@ -97,6 +99,8 @@ def userProfile(request,pk):
     topics=Topic.objects.all()
     context={'user':user,'rooms':rooms,'room_messages':room_messages,'topics':topics}
     return render(request,'base/profile.html',context)
+
+
 @login_required(login_url='login')
 def createRoom(request):
     form=RoomForm()
@@ -104,7 +108,9 @@ def createRoom(request):
         print(request.POST)
         form = RoomForm(request.POST)
         if form.is_valid():
-            form.save()
+            room=form.save(commit=False)  #gives an instance of the room to validate the data entered
+            room.host=request.user
+            room.save()
             return redirect('home')
     context={'form':form}
     return render(request,'base/room_form.html',context)
@@ -126,7 +132,7 @@ def updateRoom(request,pk):
 @login_required(login_url='login')
 def deleteRoom(request,pk):
     room=Room.objects.get(id=pk)
-    if request.user!=room.host:
+    if request.user!=room.host: #Redundant
         return HttpResponse('You are Tresspassing!!!')
     if request.method == 'POST':
         room.delete()
