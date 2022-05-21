@@ -30,6 +30,9 @@
 html {
   font-size: 56.25%;
 }
+body{
+  background-color: blueviolet;
+}
 
 @media only screen and (min-width: 1200px) {
   html {
