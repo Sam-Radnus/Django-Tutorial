@@ -25,13 +25,14 @@
   text-rendering: optimizeLegibility;
   /* color: inherit; */
   font-size: inherit;
+  background-color: blueviolet;
 }
 
 html {
   font-size: 56.25%;
 }
 body{
-  background-color: blueviolet;
+  
 }
 
 @media only screen and (min-width: 1200px) {
@@ -51,8 +52,9 @@ body {
   font-weight: 400;
   font-size: 1.5rem;
   color: var(--color-light-gray);
-  background-color: var(--color-bg);
+
   min-height: 100vh;
+  background-color: blueviolet;
 }
 
 img {
