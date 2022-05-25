@@ -92,6 +92,8 @@ def room(request,pk):
 
     context={'room':room,'room_messages':room_messages,'participants':participants}        
     return render(request,'base/room.html',context)   
+
+    
 def userProfile(request,pk):
     user=User.objects.get(id=pk)
     rooms=user.room_set.all()
