@@ -81,6 +81,9 @@ def room(request,pk):
     room=Room.objects.get(id=pk)
     room_messages=room.message_set.all().order_by('-created')
     participants=room.participants.all()
+    like=room.like.all()
+    print("like:",like)
+    print("Pariticpants:",participants)
     if request.method=='POST':
        message=Message.objects.create(
             user=request.user,
@@ -88,9 +91,9 @@ def room(request,pk):
             body=request.POST.get('body')
        )
        room.participants.add(request.user)
+       room.like.add(request.user)
        return redirect('room',pk=room.id)
-
-    context={'room':room,'room_messages':room_messages,'participants':participants}        
+    context={'room':room,'room_messages':room_messages,'participants':participants,'like':like}        
     return render(request,'base/room.html',context)   
 
     
@@ -180,3 +183,9 @@ def activityPage(request):
     room_messages=Message.objects.all()
     print(room_messages)                           
     return render(request,'base/activity.html',{'room_messages': room_messages})    
+def like(request):
+    new_like,created=like.objects.get_or_create(user=request.user)
+    if not created:
+       pass
+    else:
+       pass

@@ -15,6 +15,7 @@
                 </svg>
               </a>
               <h3>Study Room</h3>
+           
             </div>
             {% if room.host ==  request.user %}
             <div class="room__topRight">
@@ -74,6 +75,15 @@
               </div>
              
               <span class="room__topics">{{room.topic}}</span>
+              <form action=" " method="POST">
+              <p id="feedback">
+                {% csrf_token %}
+              <input name="body" type="submit" value="{{request.user.name}} liked this room">
+              
+            </p>
+            <h3>{{like.count}}</h3>
+            </form>
+            
             </div>
             <div class="room__conversation">
               <div class="threads scroll">
