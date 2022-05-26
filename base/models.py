@@ -28,6 +28,7 @@ class Room(models.Model):
     name=models.CharField(max_length=200)
     description=models.TextField(null=True,blank=True);
     participants=models.ManyToManyField(User,related_name='participants',blank=True)
+    like=models.ManyToManyField(User,related_name='like',blank=True)
     updated =models.DateTimeField(auto_now=True)   #automatic 
     created =models.DateTimeField(auto_now_add=True)  #it will only save a value once i.e the time it is created
       
