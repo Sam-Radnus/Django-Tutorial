@@ -61,6 +61,7 @@
        
             <div class="form__action">
               <a class="btn btn--dark" href="{% url 'home' %}">Cancel</a>
+              <input type="hidden" name="next" value="{{request.GET.next}}">
               <button class="btn btn--main" type="submit">Submit</button>
             </div>
           </form>

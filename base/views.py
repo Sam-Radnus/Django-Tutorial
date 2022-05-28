@@ -110,13 +110,17 @@ def createRoom(request):
     if request.method == 'POST':
         topic_name=request.POST.get('topic')
         topic,created=Topic.objects.get_or_create(name=topic_name)
-        Room.objects.create(
+        room=Room.objects.create(
             host=request.user,
             topic=topic,
             name=request.POST.get('name'),
             description=request.POST.get('description'),
         )
-        return redirect('home')
+        
+        print(room.id)
+        if 'next' in request.POST:
+            print("/",request.POST.get('id'))
+        return redirect('room',pk=room.id)
     context={'form':form,'topics':topics}
     return render(request,'base/room_form.html',context)
 @login_required(login_url='login')
