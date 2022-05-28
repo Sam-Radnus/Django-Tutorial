@@ -78,10 +78,11 @@
               <form action=" " method="POST">
               <p id="feedback">
                 {% csrf_token %}
-              <input name="body" type="submit" value="{{request.user.name}} liked this room">
-              
+                <button >
+                  <i class="fa-solid fa-thumbs-up"></i>
+                </button>
             </p>
-            <h3>{{like.count}}</h3>
+           
             </form>
             
             </div>

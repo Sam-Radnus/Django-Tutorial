@@ -81,9 +81,6 @@ def room(request,pk):
     room=Room.objects.get(id=pk)
     room_messages=room.message_set.all().order_by('-created')
     participants=room.participants.all()
-    like=room.like.all()
-    print("like:",like)
-    print("Pariticpants:",participants)
     if request.method=='POST':
        message=Message.objects.create(
             user=request.user,
@@ -91,9 +88,9 @@ def room(request,pk):
             body=request.POST.get('body')
        )
        room.participants.add(request.user)
-       room.like.add(request.user)
+       #room.like.add(1)
        return redirect('room',pk=room.id)
-    context={'room':room,'room_messages':room_messages,'participants':participants,'like':like}        
+    context={'room':room,'room_messages':room_messages,'participants':participants}        
     return render(request,'base/room.html',context)   
 
     
@@ -152,12 +149,19 @@ def deleteRoom(request,pk):
 
 @login_required(login_url='login')
 def deleteMessage(request,pk):
+    print(":",request)
+    print(Room.objects.get(id=2))
     message=Message.objects.get(id=pk)
     if request.user!=message.user: #Redundant
         return HttpResponse('Invalid Operation!!!')
     if request.method == 'POST':
-        message.delete()
-        return redirect('home')
+        if 'prev' in request.POST:
+            print("/",request.POST.get('prev'))
+            message.delete() 
+            return redirect(request.POST.get('prev'))   
+        print("?",request)
+        message.delete() 
+        return redirect('home')   
     return render(request,'base/delete.html',{'obj':message})
 
 
@@ -183,9 +187,9 @@ def activityPage(request):
     room_messages=Message.objects.all()
     print(room_messages)                           
     return render(request,'base/activity.html',{'room_messages': room_messages})    
-def like(request):
-    new_like,created=like.objects.get_or_create(user=request.user)
-    if not created:
-       pass
-    else:
-       pass
+# def like(request):
+#     new_like,created=like.objects.get_or_create(user=request.user)
+#     if not created:
+#        pass
+#     else:
+#        pass

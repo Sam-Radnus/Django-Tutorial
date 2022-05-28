@@ -28,7 +28,7 @@ class Room(models.Model):
     name=models.CharField(max_length=200)
     description=models.TextField(null=True,blank=True);
     participants=models.ManyToManyField(User,related_name='participants',blank=True)
-    like=models.ManyToManyField(User,related_name='like',blank=True)
+
     updated =models.DateTimeField(auto_now=True)   #automatic 
     created =models.DateTimeField(auto_now_add=True)  #it will only save a value once i.e the time it is created
       
@@ -52,3 +52,12 @@ class Message(models.Model):
      
         def __str__(self):
             return self.body[0:50]
+
+
+class Like(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    room=models.ForeignKey(Room,on_delete=models.CASCADE)
+    created=models.DateTimeField(auto_now_add=True)
+
+
+    
