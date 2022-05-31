@@ -49,7 +49,8 @@ class Room(models.Model):
     updated =models.DateTimeField(auto_now=True)   #automatic 
     created =models.DateTimeField(auto_now_add=True)  #it will only save a value once i.e the time it is created
       
-
+    def total_likes(self):
+        return self.likes.count()
     class Meta:
         ordering = ['-updated','-created']  # '-' puts the new data field before all the prefilled data
     def __str__(self):
@@ -62,8 +63,7 @@ class Message(models.Model):
     body=models.TextField()
     updated=models.DateTimeField(auto_now=True)
     created=models.DateTimeField(auto_now_add=True)
-    
- 
+     
     class Meta:
         ordering = ['-updated','-created']  # '-' puts the new data field before all the prefilled data
      
