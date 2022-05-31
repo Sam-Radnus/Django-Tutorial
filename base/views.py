@@ -89,10 +89,13 @@ def room(request,pk):
             room=room,
             body=request.POST.get('body')
        )
+     
        room.participants.add(request.user)
        #room.like.add(1)
        return redirect('room',pk=room.id)
-    context={'room':room,'room_messages':room_messages,'participants':participants}        
+    stuff=get_object_or_404(Room,id=pk)
+    total_likes=stuff.total_likes()
+    context={'room':room,'room_messages':room_messages,'participants':participants,'total_likes':total_likes}        
     return render(request,'base/room.html',context)   
 
     
@@ -156,8 +159,8 @@ def deleteRoom(request,pk):
 @login_required(login_url='login')
 def deleteMessage(request,pk):
     print(":",request)
-    print(Room.objects.get(id=2))
     message=Message.objects.get(id=pk)
+
     if request.user!=message.user: #Redundant
         return HttpResponse('Invalid Operation!!!')
     if request.method == 'POST':
@@ -190,8 +193,7 @@ def topicsPage(request):
     return render(request,'base/topics.html',{'topics':topics})
 
 def activityPage(request):
-    room_messages=Message.objects.all()
-    print(room_messages)                           
+    room_messages=Message.objects.all()                       
     return render(request,'base/activity.html',{'room_messages': room_messages})    
 # def like(request):
 #     new_like,created=like.objects.get_or_create(user=request.user)
