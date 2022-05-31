@@ -75,14 +75,17 @@
               </div>
              
               <span class="room__topics">{{room.topic}}</span>
-              <form action="{% url 'like_post' room.id %}" method="POST">
-              <p id="feedback">
-                {% csrf_token %}
-                <button type="submit" name="post_id"  value="{{ room.id }}" class="btn btn-primary btn-sm">
-                  <i class="fa-solid fa-thumbs-up"></i>
-                </button>
-                {{total_likes}} Likes
-            </p>
+              {% if user.is_authenticated %}
+                  <form action="{% url 'like_post' room.id %}" method="POST">
+                  <p id="feedback">
+                    {% csrf_token %}
+                    <button type="submit" name="post_id"  value="{{ room.id }}" class="btn btn-primary btn-sm">
+                      <i class="fa-solid fa-thumbs-up"></i>
+                    </button>
+                    {{total_likes}} Likes
+            
+                  </p>
+              {% endif %}  
            
             </form>
             
