@@ -1,13 +1,15 @@
 import email
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
+from django.urls import reverse,reverse_lazy
 from .forms import MyUserCreationForm
 from .models import Room,Topic,Message,User
 from .forms import RoomForm,UserForm
+
 # Create your views here.
 
 
@@ -197,3 +199,8 @@ def activityPage(request):
 #        pass
 #     else:
 #        pass
+def LikeView(request,pk):
+    post=get_object_or_404(Room,id=request.POST.get('post_id'))
+    post.likes.add(request.user)#save the likes to the table along with the user 
+    print(pk)
+    return redirect('room',pk)

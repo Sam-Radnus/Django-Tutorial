@@ -6,13 +6,18 @@ class User(AbstractUser):
     name=models.CharField(max_length=200,null=True)
     email=models.EmailField(unique=True,null=True)
     bio=models.TextField(null=True)
-     
+    
     avatar=models.ImageField(null=True,default="avatar.svg")
 
     USERNAME_FIELD ='email'
     REQUIRED_FIELDS =[]
 
-
+    def create_superuser(self, email, password, first_name, last_name):
+       user = self.create_user(email, password=password, first_name=first_name, last_name=last_name)
+       user.is_superuser = True
+       user.is_staff = True
+       user.save(using=self._db)
+       return user
 #Create your models here.
 #id for models are automatically generated /default :1,2
 class Topic(models.Model):
@@ -28,7 +33,7 @@ class Room(models.Model):
     name=models.CharField(max_length=200)
     description=models.TextField(null=True,blank=True);
     participants=models.ManyToManyField(User,related_name='participants',blank=True)
-
+    likes=models.ManyToManyField(User,related_name='likes',blank=True)
     updated =models.DateTimeField(auto_now=True)   #automatic 
     created =models.DateTimeField(auto_now_add=True)  #it will only save a value once i.e the time it is created
       
@@ -45,8 +50,8 @@ class Message(models.Model):
     body=models.TextField()
     updated=models.DateTimeField(auto_now=True)
     created=models.DateTimeField(auto_now_add=True)
-
-
+    
+ 
     class Meta:
         ordering = ['-updated','-created']  # '-' puts the new data field before all the prefilled data
      
