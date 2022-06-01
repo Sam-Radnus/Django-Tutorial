@@ -81,9 +81,12 @@
                     {% csrf_token %}
                     <button type="submit" name="post_id"  value="{{ room.id }}" class="btn btn-primary btn-sm">
                       <i style="color:#696D97" class="fa-solid fa-thumbs-up"></i>
-                    </button>`
-                    {{total_likes}} Likes
-            
+                    </button>
+                    {% if total_likes == 1 %}
+                       {{total_likes}} Like
+                    {% else %}   
+                       {{total_likes}} Likes
+                    {% endif %}   
                   </p>
               {% endif %}  
            

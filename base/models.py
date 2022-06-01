@@ -3,14 +3,15 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    name=models.CharField(max_length=200,null=True)
+    
+    name = models.CharField(db_index=True, unique=True, max_length=255,null=True)
     email=models.EmailField(unique=True,null=True)
     bio=models.TextField(null=True)
-    
     avatar=models.ImageField(null=True,default="avatar.svg")
 
     USERNAME_FIELD ='email'
-    REQUIRED_FIELDS =[]
+
+    REQUIRED_FIELDS = ['username']
     
     def create_user(self, email, password=None, first_name=None, last_name=None, **extra_fields):
         if not email:
@@ -24,12 +25,18 @@ class User(AbstractUser):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    def create_superuser(self, email, password, first_name, last_name):
-       user = self.create_user(email, password=password, first_name=first_name, last_name=last_name)
-       user.is_superuser = True
-       user.is_staff = True
-       user.save(using=self._db)
-       return user
+    def create_superuser(self, email, username, password):
+        user = self.create_user(
+            username=username,
+            email=self.normalize_email(email),
+            password=password,
+            
+        )
+        user.is_admin =True
+        user.is_staff =True
+        user.is_superuser=True
+        user.save(using=self._db)
+        return user
 #Create your models here.
 #id for models are automatically generated /default :1,2
 class Topic(models.Model):
