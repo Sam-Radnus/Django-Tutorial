@@ -1,4 +1,5 @@
 import email
+from venv import create
 from django.shortcuts import render,redirect,get_object_or_404
 from django.db.models import Q
 from django.http import HttpResponse,HttpResponseRedirect
@@ -56,6 +57,7 @@ def registerPage(request):
             login(request,user)
             return redirect('home')
         else:
+            print(form)
             messages.error(request,'error occurred')    
     return render(request,'base/login_register.html',{'form':form})    
 
@@ -203,6 +205,10 @@ def activityPage(request):
 #        pass
 def LikeView(request,pk):
     post=get_object_or_404(Room,id=request.POST.get('post_id'))
-    post.likes.add(request.user)#save the likes to the table along with the user 
-    print(pk)
+    print(post.likes)
+    liked,new_like=Room.objects.get_or_create(id=request.POST.get('post_id'))
+    if post.likes.filter(id=request.user.id).exists():
+       post.likes.remove(request.user)
+    else:
+       post.likes.add(request.user)#save the likes to the table along with the user  
     return redirect('room',pk)
