@@ -13,13 +13,6 @@ from .forms import RoomForm,UserForm
 
 # Create your views here.
 
-
-# rooms = [
-#     {'id':1,'name':'lets learn python!'},
-#     {'id':2,'name':'lets learn django!'},
-#     {'id':3,'name':'lets learn flask!'},
-# ]
-
 def loginPage(request):
     page='login'
     if request.user.is_authenticated:
@@ -185,7 +178,6 @@ def updateUser(request):
         form=UserForm(request.POST,request.FILES,instance=user)
         if form.is_valid():
             form.save()
-            
             return  redirect ('user-profile',pk=user.id)
     return render(request,'base/update_user.html',{'form':form})
 
@@ -197,16 +189,10 @@ def topicsPage(request):
 def activityPage(request):
     room_messages=Message.objects.all()                       
     return render(request,'base/activity.html',{'room_messages': room_messages})    
-# def like(request):
-#     new_like,created=like.objects.get_or_create(user=request.user)
-#     if not created:
-#        pass
-#     else:
-#        pass
+
 def LikeView(request,pk):
     post=get_object_or_404(Room,id=request.POST.get('post_id'))
     print(post.likes)
-    liked,new_like=Room.objects.get_or_create(id=request.POST.get('post_id'))
     if post.likes.filter(id=request.user.id).exists():
        post.likes.remove(request.user)
     else:
